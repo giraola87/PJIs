@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Fagoterapia en Infección Periprotésica</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  /* chrome & ink (light) */
+  --plane:#f9f9f7;
+  --surface:#fcfcfb;
+  --surface-2:#f2f1ed;
+  --ink:#0b0b0b;
+  --ink-2:#52514e;
+  --muted:#898781;
+  --grid:#e1e0d9;
+  --axis:#c3c2b7;
+  --hairline:rgba(11,11,11,0.10);
+  /* categorical series */
+  --s1:#2a78d6;   /* fagoterapia */
+  --s2:#eb6834;   /* comparador / placebo */
+  --s3:#1baf7a;   /* tercera categoría */
+  --s4:#eda100;   /* cuarta categoría */
+  /* status */
+  --good:#0ca30c;
+  --warning:#fab219;
+  --serious:#ec835a;
+  --critical:#d03b3b;
+  --shadow:0 1px 2px rgba(11,11,11,.05),0 10px 28px -22px rgba(11,11,11,.35);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --plane:#0d0d0d;
+    --surface:#1a1a19;
+    --surface-2:#232322;
+    --ink:#ffffff;
+    --ink-2:#c3c2b7;
+    --muted:#898781;
+    --grid:#2c2c2a;
+    --axis:#383835;
+    --hairline:rgba(255,255,255,0.10);
+    --s1:#3987e5;
+    --s2:#d95926;
+    --s3:#199e70;
+    --s4:#c98500;
+    --shadow:0 1px 2px rgba(0,0,0,.6),0 10px 28px -22px rgba(0,0,0,1);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --plane:#0d0d0d;
+  --surface:#1a1a19;
+  --surface-2:#232322;
+  --ink:#ffffff;
+  --ink-2:#c3c2b7;
+  --muted:#898781;
+  --grid:#2c2c2a;
+  --axis:#383835;
+  --hairline:rgba(255,255,255,0.10);
+  --s1:#3987e5;
+  --s2:#d95926;
+  --s3:#199e70;
+  --s4:#c98500;
+  --shadow:0 1px 2px rgba(0,0,0,.6),0 10px 28px -22px rgba(0,0,0,1);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--plane);color:var(--ink);
+  font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+.shell{max-width:1220px;margin:0 auto;padding:0 24px 80px}
+@media(max-width:640px){.shell{padding:0 14px 56px}}
+
+/* ---------- top bar ---------- */
+.topbar{padding:30px 0 22px;display:flex;flex-wrap:wrap;gap:18px 32px;align-items:flex-end;justify-content:space-between}
+.title-block{display:flex;flex-direction:column;gap:6px;min-width:280px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--s1)}
+h1{margin:0;font-size:clamp(1.5rem,3.4vw,2.05rem);font-weight:700;letter-spacing:-.02em;line-height:1.12;text-wrap:balance}
+.sub{margin:0;color:var(--ink-2);font-size:14px;max-width:62ch}
+.meta{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--muted);text-align:right}
+.meta b{color:var(--ink-2);font-weight:600}
+@media(max-width:700px){.meta{text-align:left}}
+
+/* ---------- alert ---------- */
+.alert{
+  display:flex;gap:12px;align-items:flex-start;background:var(--surface);
+  border:1px solid var(--hairline);border-left:3px solid var(--critical);
+  padding:14px 18px;box-shadow:var(--shadow);margin-bottom:22px;
+}
+.alert .ico{flex:none;width:18px;height:18px;margin-top:1px;color:var(--critical)}
+.alert p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:88ch}
+.alert b{color:var(--ink);font-weight:600}
+
+/* ---------- kpi row ---------- */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:26px}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.kpis{grid-template-columns:1fr}}
+.kpi{background:var(--surface);border:1px solid var(--hairline);padding:16px 16px 14px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow)}
+.kpi .v{font-size:2rem;font-weight:600;line-height:1;letter-spacing:-.03em}
+.kpi .v small{font-size:.95rem;font-weight:500;color:var(--muted);letter-spacing:0}
+.kpi .k{font-size:12px;font-weight:600;color:var(--ink)}
+.kpi .d{font-size:11.5px;color:var(--muted);line-height:1.35}
+.kpi.flag .v{color:var(--critical)}
+
+/* ---------- cards / grid ---------- */
+.grid{display:grid;gap:16px;margin-bottom:16px}
+.g-2{grid-template-columns:1fr 1fr}
+.g-53{grid-template-columns:1.5fr 1fr}
+@media(max-width:900px){.g-2,.g-53{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--hairline);box-shadow:var(--shadow);padding:20px 22px 18px;display:flex;flex-direction:column}
+.card-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:baseline;justify-content:space-between;margin-bottom:4px}
+h2{margin:0;font-size:15px;font-weight:600;letter-spacing:-.005em}
+.card-note{margin:4px 0 16px;font-size:12px;color:var(--muted);max-width:80ch;line-height:1.45}
+.card-foot{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--grid);font-size:11.5px;color:var(--muted);line-height:1.45}
+
+/* ---------- legend ---------- */
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:11.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:2px;flex:none}
+.sw.a{background:var(--s1)}.sw.b{background:var(--s2)}.sw.c{background:var(--s3)}
+.sw.ci{width:12px;height:2px;border-radius:0;background:var(--ink-2);position:relative}
+
+/* ---------- horizontal bar chart ---------- */
+.hbars{display:flex;flex-direction:column;gap:9px;position:relative}
+.hgroup{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  padding:8px 0 2px;border-top:1px solid var(--grid);margin-top:3px;display:flex;gap:8px;align-items:baseline}
+.hgroup:first-child{border-top:none;margin-top:0;padding-top:0}
+.hgroup em{font-style:normal;font-weight:400;letter-spacing:0;text-transform:none;font-size:11px;color:var(--muted);opacity:.85}
+.hrow.small .hlab{color:var(--ink-2)}
+.hrow{display:grid;grid-template-columns:minmax(140px,236px) 1fr;gap:14px;align-items:center}
+@media(max-width:680px){.hrow{grid-template-columns:1fr;gap:4px}}
+.hlab{font-size:12px;color:var(--ink);line-height:1.28}
+.hlab i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);margin-top:1px}
+.plot{position:relative;height:22px}
+.gridlines{position:absolute;inset:0;pointer-events:none}
+.gridlines i{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--grid)}
+.bar{position:absolute;left:0;top:3px;bottom:3px;background:var(--s1);border-radius:0 4px 4px 0;cursor:default}
+.bar.cmp{background:var(--s2)}
+.bar:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.bval{position:absolute;top:50%;transform:translateY(-50%);font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.ci{position:absolute;top:50%;height:2px;background:var(--ink-2);transform:translateY(-1px);opacity:.75}
+.ci::before,.ci::after{content:"";position:absolute;top:-4px;height:10px;width:2px;background:var(--ink-2)}
+.ci::before{left:0}.ci::after{right:0}
+.xaxis{display:grid;grid-template-columns:minmax(140px,236px) 1fr;gap:14px;margin-top:10px}
+@media(max-width:680px){.xaxis{grid-template-columns:1fr}.xaxis .sp{display:none}}
+.ticks{position:relative;height:16px;border-top:1px solid var(--axis)}
+.ticks i{position:absolute;top:3px;transform:translateX(-50%);font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--muted)}
+
+/* ---------- stacked bar ---------- */
+.stack-wrap{display:flex;flex-direction:column;gap:16px}
+.stack{display:flex;gap:2px;height:30px}
+.seg{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:2px;cursor:default}
+.seg span{font-size:11px;font-weight:600;color:#fcfcfb;white-space:nowrap;padding:0 6px}
+.seg.a{background:var(--s1)}.seg.b{background:var(--s2)}.seg.c{background:var(--s3)}.seg.d{background:var(--s4)}.seg.o{background:var(--axis)}
+.sw.o{background:var(--axis)}.sw.d{background:var(--s4)}
+
+/* ---------- multi-series stacked rows ---------- */
+.mstack{display:flex;flex-direction:column;gap:11px}
+.mrow{display:grid;grid-template-columns:minmax(140px,214px) 1fr;gap:14px;align-items:center}
+@media(max-width:680px){.mrow{grid-template-columns:1fr;gap:4px}}
+.mrow .ml{font-size:12px;color:var(--ink);line-height:1.28}
+.mrow .ml i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);margin-top:1px}
+.mrow .stack{height:24px}
+.mrow .seg span{font-size:10.5px}
+.keyrow{display:flex;flex-wrap:wrap;gap:6px 18px;margin:16px 0 0;padding-top:12px;border-top:1px solid var(--grid);font-size:11.5px;color:var(--ink-2)}
+.keyrow span{display:inline-flex;align-items:center;gap:6px}
+
+/* ---------- schedule range plot ---------- */
+.sched{display:flex;flex-direction:column;gap:12px}
+.srow{display:grid;grid-template-columns:minmax(150px,236px) 1fr 84px;gap:14px;align-items:center}
+@media(max-width:760px){.srow{grid-template-columns:1fr;gap:4px}}
+.srow .sl{font-size:12px;color:var(--ink);line-height:1.28}
+.srow .sl i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);margin-top:2px;line-height:1.3}
+.srow .sv{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-variant-numeric:tabular-nums;color:var(--ink);text-align:right}
+.sched-axis{grid-template-columns:minmax(150px,236px) 1fr 84px}
+@media(max-width:760px){.sched-axis{grid-template-columns:1fr}}
+.rbar{position:absolute;top:5px;bottom:5px;background:var(--s1);border-radius:3px}
+.rbar.single{background:var(--s2);min-width:7px}
+.rbar.rescue{background:var(--s3)}
+.rbar:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.doses{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--grid);border:1px solid var(--grid);margin-top:18px}
+@media(max-width:760px){.doses{grid-template-columns:1fr}}
+.doses div{background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+.doses .dv{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--ink);font-weight:500}
+.doses .dl{font-size:11.5px;color:var(--muted);line-height:1.38}
+.seg:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.stack-lab{font-size:12px;font-weight:600;margin-bottom:6px}
+.stack-lab em{font-style:normal;font-weight:400;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:11px;margin-left:6px}
+.stack-keys{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:7px;font-size:11.5px;color:var(--ink-2)}
+.stack-keys span{display:inline-flex;align-items:center;gap:6px}
+.stack-keys b{font-family:"IBM Plex Mono",monospace;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* ---------- line chart ---------- */
+.linewrap{width:100%;overflow-x:auto}
+svg.line{display:block;width:100%;height:auto;min-width:420px}
+
+/* ---------- paired compare ---------- */
+.pair{display:flex;flex-direction:column;gap:14px;margin-top:4px}
+.pair-row{display:grid;grid-template-columns:96px 1fr 52px;gap:12px;align-items:center}
+.pair-row .n{font-size:12px;color:var(--ink)}
+.pair-row .n i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted)}
+.pair-track{position:relative;height:20px;background:var(--surface-2);border-radius:2px}
+.pair-fill{position:absolute;left:0;top:0;bottom:0;border-radius:0 4px 4px 0;background:var(--s1)}
+.pair-fill.cmp{background:var(--s2)}
+.pair-row .p{font-family:"IBM Plex Mono",monospace;font-size:13px;font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+.facts{list-style:none;margin:16px 0 0;padding:14px 0 0;border-top:1px solid var(--grid);display:flex;flex-direction:column;gap:8px}
+.facts li{display:grid;grid-template-columns:132px 1fr;gap:12px;font-size:12.5px;color:var(--ink-2)}
+.facts b{font-weight:600;color:var(--ink)}
+@media(max-width:520px){.facts li{grid-template-columns:1fr;gap:1px}}
+
+/* ---------- toggle / chips ---------- */
+.btn{
+  font-family:inherit;font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px;
+  border:1px solid var(--axis);background:var(--surface);color:var(--ink-2);cursor:pointer;
+  transition:border-color .12s,background .12s,color .12s;
+}
+.btn:hover{border-color:var(--s1);color:var(--ink)}
+.btn[aria-pressed="true"]{background:var(--s1);border-color:var(--s1);color:#fcfcfb}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.filterbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.filterbar .lbl{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+
+/* ---------- tables ---------- */
+.tscroll{overflow-x:auto;border:1px solid var(--grid)}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:12.5px}
+#studies{min-width:1180px}
+#studies td:nth-child(5){min-width:260px}
+#studies td:nth-child(6){min-width:300px}
+#studies td:nth-child(3){min-width:150px}
+th{
+  text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  padding:10px 12px;background:var(--surface-2);border-bottom:1px solid var(--axis);white-space:nowrap;position:sticky;top:0;
+}
+td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top;color:var(--ink-2);line-height:1.42}
+tbody tr:last-child td{border-bottom:none}
+td.s{color:var(--ink);font-weight:500;min-width:190px}
+td.s a{color:var(--ink);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--s1) 45%,transparent)}
+td.s a:hover{color:var(--s1);border-bottom-color:var(--s1)}
+td.s a:focus-visible{outline:2px solid var(--s1);outline-offset:2px}
+svg.ext{width:9px;height:9px;margin-left:5px;vertical-align:baseline;fill:none;stroke:var(--s1);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:.75}
+.nolink{display:inline-block;margin-left:6px;font-size:9.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid var(--grid);border-radius:3px;padding:1px 5px;vertical-align:middle}
+td.s i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);font-weight:400;margin-top:2px}
+td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+.pill{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:3px;white-space:nowrap;border:1px solid var(--axis);color:var(--ink-2);background:var(--surface)}
+.pill.rct{border-color:var(--s1);color:var(--s1)}
+.pill.ctl{border-color:var(--s3);color:var(--s3)}
+
+/* ---------- timeline ---------- */
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:74px 1fr;gap:16px;padding:11px 0;border-top:1px solid var(--grid)}
+.tl li:first-child{border-top:none;padding-top:0}
+.tl .y{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--s1);font-variant-numeric:tabular-nums}
+.tl .e b{display:block;font-size:12.5px;font-weight:600;margin-bottom:1px}
+.tl .e span{font-size:12px;color:var(--ink-2)}
+
+/* ---------- verdict / status list ---------- */
+.slist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.slist li{display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:12.5px;color:var(--ink-2);line-height:1.45}
+.slist .dot{width:9px;height:9px;border-radius:50%;margin-top:5px}
+.dot.ok{background:var(--good)}
+.dot.warn{background:var(--warning)}
+.dot.bad{background:var(--critical)}
+.slist b{color:var(--ink);font-weight:600;display:block}
+
+/* ---------- safety strip ---------- */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--grid);border:1px solid var(--grid);margin-top:2px}
+@media(max-width:760px){.strip{grid-template-columns:repeat(2,1fr)}}
+.strip div{background:var(--surface);padding:13px 14px;display:flex;flex-direction:column;gap:3px}
+.strip .v{font-family:"IBM Plex Mono",monospace;font-size:1.15rem;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.strip .l{font-size:11.5px;color:var(--muted);line-height:1.35}
+
+/* ---------- tooltip ---------- */
+#tip{
+  position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .1s;
+  background:var(--ink);color:var(--plane);font-size:11.5px;line-height:1.4;
+  padding:7px 10px;border-radius:4px;max-width:280px;box-shadow:0 6px 20px -8px rgba(0,0,0,.5);
+}
+#tip b{display:block;font-weight:600;margin-bottom:2px}
+#tip.on{opacity:1}
+
+footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--grid);font-size:11.5px;color:var(--muted);line-height:1.5;max-width:96ch}
+footer a{color:var(--s1)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="shell">
+
+<header class="topbar">
+  <div class="title-block">
+    <div class="eyebrow">Panel de evidencia · Septiembre 2026</div>
+    <h1>Fagoterapia en infección periprotésica</h1>
+    <p class="sub">Toda la evidencia clínica publicada, con foco en el programa de Lyon (CRIOAc / PHAGE<em>in</em>LYON) — la mayor experiencia unicéntrica del mundo.</p>
+  </div>
+  <div class="meta">
+    <span><b>Búsqueda</b> 2 sep 2026</span>
+    <span><b>Fuentes</b> PubMed/Europe PMC · texto completo · ANSM · congresos · patrocinante</span>
+    <span><b>Máximo nivel de evidencia</b> 1 ensayo piloto aleatorizado (n=29)</span>
+  </div>
+</header>
+
+<div class="alert">
+  <svg class="ico" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="8"></circle><path d="M10 6v5M10 14h.01" stroke-linecap="round"></path></svg>
+  <p><b>El dato más importante del panel.</b> El único ensayo aleatorizado que existe (PhagoDAIR I, coordinado desde Lyon) no muestra separación frente a placebo: 73,7 % vs 71,4 % de control clínico a 12 semanas. Estaba subdimensionado y era no comparativo por diseño, pero ambos brazos caen dentro de la misma banda del 70–80 % que reportan las series no controladas.</p>
+</div>
+
+<section class="kpis">
+  <div class="kpi">
+    <span class="v">&gt;120</span>
+    <span class="k">Pacientes tratados en Lyon</span>
+    <span class="d">Desde 2017; ~80 % infección osteoarticular. Paciente n.º 100 en 2026</span>
+  </div>
+  <div class="kpi">
+    <span class="v">69,2<small>%</small></span>
+    <span class="k">Evolución favorable</span>
+    <span class="d">Cohorte Lyon 2022 (n=26), seguimiento medio 10,6 meses</span>
+  </div>
+  <div class="kpi">
+    <span class="v">73,7 / 71,4<small>%</small></span>
+    <span class="k">PhagoDAIR I: fago vs placebo</span>
+    <span class="d">Control clínico a 12 semanas (n=19 vs n=7)</span>
+  </div>
+  <div class="kpi">
+    <span class="v">19</span>
+    <span class="k">Estudios recuperados</span>
+    <span class="d">~250–300 pacientes en total; los recuentos se solapan entre series</span>
+  </div>
+  <div class="kpi flag">
+    <span class="v">0</span>
+    <span class="k">ECA con poder estadístico</span>
+    <span class="d">Ninguno completado; el sucesor (GLORIA) quedó en suspenso</span>
+  </div>
+</section>
+
+<!-- ============ CHART 1 ============ -->
+<div class="grid">
+  <div class="card">
+    <div class="card-head">
+      <h2>Tasas de éxito reportadas, por estudio</h2>
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+        <div class="legend">
+          <span><i class="sw a"></i>Fagoterapia</span>
+          <span><i class="sw b"></i>Comparador / placebo</span>
+          <span><i class="sw ci"></i>IC 95 % o rango reportado</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn" id="v-chart" aria-pressed="true">Gráfico</button>
+          <button class="btn" id="v-table" aria-pressed="false">Tabla</button>
+        </div>
+      </div>
+    </div>
+    <p class="card-note">Todos los estudios recuperados que reportan una tasa, agrupados por diseño. Cada barra es una <strong>definición distinta de éxito, medida en un momento distinto, en una población distinta</strong> — no son intercambiables y no deben ordenarse como un ranking. Lo que importa es el patrón: las cohortes y series no controladas se agrupan en 65–80 %, y el brazo placebo del único ensayo cae dentro de esa misma banda. Pasá el cursor sobre cualquier barra para ver la definición, el momento de medición y la advertencia del estudio.</p>
+
+    <div id="chart1">
+      <div class="hbars" id="bars1"></div>
+      <div class="xaxis"><span class="sp"></span><div class="ticks" id="ticks1"></div></div>
+    </div>
+
+    <div id="table1" hidden class="tscroll">
+      <table>
+        <thead><tr><th>Estudio</th><th>n</th><th>Definición de éxito</th><th>Momento</th><th>Valor</th></tr></thead>
+        <tbody id="tbody1"></tbody>
+      </table>
+    </div>
+
+    <p class="card-foot"><strong>Cómo leer los extremos.</strong> Arriba, los 100 % de Doub (n=10) y Ferry (n=3) usan desenlaces laxos —«sin recurrencia con el germen índice», «mejoría clínica»— con seguimientos cortos y muestras mínimas; el 93,1 % de Clarke agrega literatura de 1933 a 2020. Abajo, el 46,7 % de la ANSM mide mejoría a 21 días, demasiado pronto, y el 57 % de Genevière es el dato más específico de infección periprotésica que existe. El contraste más informativo del gráfico está dentro de una sola cohorte: Pirnay 2024 cae de 77,2 % de mejoría clínica a 61,3 % de erradicación microbiológica según qué se exija como éxito.</p>
+  </div>
+</div>
+
+<!-- ============ LYON GROWTH + COHORT ============ -->
+<div class="grid g-53">
+  <div class="card">
+    <div class="card-head"><h2>Crecimiento acumulado del programa de Lyon</h2></div>
+    <p class="card-note">Pacientes tratados con fagos en los Hospices Civils de Lyon, acumulado desde el inicio del programa.</p>
+    <div class="linewrap">
+      <svg class="line" viewBox="0 0 620 240" role="img" aria-label="Curva acumulada de pacientes tratados en Lyon: 21 en 2020, aproximadamente 55 en 2022 y más de 120 en 2026">
+        <!-- gridlines -->
+        <g stroke="var(--grid)" stroke-width="1">
+          <line x1="52" y1="192" x2="600" y2="192"></line>
+          <line x1="52" y1="148" x2="600" y2="148"></line>
+          <line x1="52" y1="104" x2="600" y2="104"></line>
+          <line x1="52" y1="60" x2="600" y2="60"></line>
+          <line x1="52" y1="16" x2="600" y2="16"></line>
+        </g>
+        <g fill="var(--muted)" font-size="10" font-family="IBM Plex Mono, monospace" text-anchor="end">
+          <text x="44" y="196">0</text>
+          <text x="44" y="152">30</text>
+          <text x="44" y="108">60</text>
+          <text x="44" y="64">90</text>
+          <text x="44" y="20">120</text>
+        </g>
+        <!-- area + line: 2017(0) 2020(21) 2022(55) 2026(120) -->
+        <path d="M72 192 L226 161 L328 111 L580 16 L580 192 L72 192 Z" fill="var(--s1)" opacity="0.10"></path>
+        <path d="M72 192 L226 161 L328 111 L580 16" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+        <g>
+          <circle cx="226" cy="161" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"></circle>
+          <circle cx="328" cy="111" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"></circle>
+          <circle cx="580" cy="16" r="5.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"></circle>
+        </g>
+        <!-- selective direct labels -->
+        <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink)">
+          <text x="226" y="151" text-anchor="middle">21</text>
+          <text x="328" y="101" text-anchor="middle">~55</text>
+          <text x="566" y="32" text-anchor="end">&gt;120</text>
+        </g>
+        <!-- x axis -->
+        <line x1="52" y1="192" x2="600" y2="192" stroke="var(--axis)" stroke-width="1"></line>
+        <g fill="var(--muted)" font-size="10" font-family="IBM Plex Mono, monospace" text-anchor="middle">
+          <text x="72" y="210">2017</text>
+          <text x="226" y="210">2020</text>
+          <text x="328" y="210">2022</text>
+          <text x="580" y="210">2026</text>
+        </g>
+        <g fill="var(--muted)" font-size="9.5" font-family="Archivo, sans-serif">
+          <text x="226" y="226" text-anchor="middle">fin serie ECCMID</text>
+          <text x="328" y="226" text-anchor="middle">apertura PHAGEinLYON</text>
+          <text x="580" y="226" text-anchor="end">n.º 100 · autorización ANSM</text>
+        </g>
+      </svg>
+    </div>
+    <p class="card-foot">El valor de 2022 es derivado: los 33 pacientes tratados ese año representaron el 60 % del total acumulado desde 2017, según la publicación. La cifra de 2026 procede de comunicación institucional de los HCL, no de una cohorte revisada por pares.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Composición de la cohorte de Lyon 2022</h2></div>
+    <p class="card-note">26 pacientes tratados en los HCL, el corte mejor documentado del programa.</p>
+    <div class="stack-wrap">
+      <div>
+        <div class="stack-lab">Sitio de infección <em>n=26</em></div>
+        <div class="stack" id="stack-site"></div>
+        <div class="stack-keys">
+          <span><i class="sw a"></i>Osteoarticular <b>80,8 %</b></span>
+          <span><i class="sw b"></i>Vascular/EI <b>7,7 %</b></span>
+          <span><i class="sw c"></i>Pulmonar <b>7,7 %</b></span>
+          <span><i class="sw o"></i>Otros <b>3,8 %</b></span>
+        </div>
+      </div>
+      <div>
+        <div class="stack-lab">Patógeno diana <em>n=26</em></div>
+        <div class="stack" id="stack-bug"></div>
+        <div class="stack-keys">
+          <span><i class="sw a"></i><em style="font-style:italic">S. aureus</em> <b>73,1 %</b></span>
+          <span><i class="sw b"></i><em style="font-style:italic">P. aeruginosa</em> <b>26,9 %</b></span>
+        </div>
+      </div>
+      <div>
+        <div class="stack-lab">Vía de administración <em>156 preparados</em></div>
+        <div class="stack" id="stack-route"></div>
+        <div class="stack-keys">
+          <span><i class="sw a"></i>Intravenosa <b>99</b></span>
+          <span><i class="sw b"></i>Local ecoguiada <b>47</b></span>
+          <span><i class="sw c"></i>Intraoperatoria <b>10</b></span>
+        </div>
+      </div>
+    </div>
+    <p class="card-foot">La farmacia hospitalaria preparó 172 cócteles en total; la publicación detalla la vía de 156 de ellos. Un paciente recibió fagos anti-<em>S. aureus</em> y anti-<em>P. aeruginosa</em>.</p>
+  </div>
+</div>
+
+<!-- ============ PHAGODAIR + FUNNEL ============ -->
+<div class="grid g-2">
+  <div class="card">
+    <div class="card-head">
+      <h2>PhagoDAIR I — el único dato controlado</h2>
+      <div class="legend"><span><i class="sw a"></i>Fago</span><span><i class="sw b"></i>Placebo</span></div>
+    </div>
+    <p class="card-note">Control clínico a 12 semanas. Piloto multicéntrico, aleatorizado, doble ciego y <strong>no comparativo</strong> por diseño (NCT05369104).</p>
+    <div class="pair">
+      <div class="pair-row"><span class="n">Fago<i>n=19</i></span><span class="pair-track"><span class="pair-fill" style="width:73.7%"></span></span><span class="p">73,7 %</span></div>
+      <div class="pair-row"><span class="n">Placebo<i>n=7</i></span><span class="pair-track"><span class="pair-fill cmp" style="width:71.4%"></span></span><span class="p">71,4 %</span></div>
+      <div class="pair-row"><span class="n">Con rescate<i>n=20</i></span><span class="pair-track"><span class="pair-fill" style="width:80%"></span></span><span class="p">80,0 %</span></div>
+    </div>
+    <ul class="facts">
+      <li><b>Población</b><span><em style="font-style:italic">S. aureus</em> monomicrobiano en prótesis de cadera o rodilla, &gt;1 mes tras el implante, manejado con DAIR</span></li>
+      <li><b>Intervención</b><span>Inyección intraarticular única de PP1493 y/o PP1815, seleccionados por fagograma, durante el DAIR o ecoguiada 2 semanas después</span></li>
+      <li><b>Reclutamiento</b><span>29 aleatorizados de 64 previstos, con desequilibrio 20:9</span></li>
+      <li><b>Seguridad</b><span>Sin señal de seguridad; 2 eventos graves emergentes en el brazo fago; el comité recomendó continuar en cada revisión</span></li>
+      <li><b>Sucesor</b><span>GLORIA (NCT06605651), 100 pacientes, con IND aprobado por la FDA en nov 2024 — en suspenso tras la liquidación judicial del patrocinante en junio 2025</span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Del pedido al tratamiento — el embudo de 2022</h2></div>
+    <p class="card-note">Solo el 23 % de las solicitudes terminó en tratamiento. El cuello de botella es la cobertura del fago y los tiempos, no la voluntad clínica.</p>
+    <div class="hbars" id="funnel"></div>
+    <div class="xaxis"><span class="sp"></span><div class="ticks" id="ticks-funnel"></div></div>
+    <p class="card-foot">De los 44 pacientes con germen cubierto, 11 no se trataron: 4 perdidos en el seguimiento, 2 por progresión, 1 por complejidad, resto por motivos clínicos. Otros 13 quedaron fuera por falta de fago activo, sobre todo estafilococos coagulasa negativos. En paralelo, un estudio francés independiente halló que el 44 % (42/96) de los pacientes con IAP cumpliría criterios de elegibilidad sobre el papel.</p>
+  </div>
+</div>
+
+<!-- ============ ESPECIES + VÍAS ============ -->
+<div class="grid g-2">
+  <div class="card">
+    <div class="card-head"><h2>Especies diana, por serie</h2></div>
+    <p class="card-note">Composición bacteriana de cada serie que publica el dato. <strong>No se agregan en un total</strong>: las series se solapan entre sí. Cuando la publicación no desglosa por especie, el tramo queda en gris.</p>
+    <div class="mstack" id="species"></div>
+    <div class="keyrow">
+      <span><i class="sw a"></i><em style="font-style:italic">S. aureus</em></span>
+      <span><i class="sw b"></i><em style="font-style:italic">P. aeruginosa</em></span>
+      <span><i class="sw c"></i>Otros estafilococos</span>
+      <span><i class="sw d"></i>Otras especies o polimicrobiana</span>
+      <span><i class="sw o"></i>Sin desglose</span>
+    </div>
+    <p class="card-foot"><em style="font-style:italic">S. aureus</em> es la diana en la mayoría de las series específicas de infección periprotésica. <em style="font-style:italic">P. aeruginosa</em> solo domina donde el centro trata indicaciones mixtas — Pirnay incluye pulmón y partes blandas. En Lyon 2022 las cifras suman 100 % con un solapamiento: un paciente recibió fagos contra ambas especies. Los estafilococos coagulasa negativos siguen siendo el hueco de cobertura que más candidatos descarta.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Vías de administración, por serie</h2></div>
+    <p class="card-note">Proporción de administraciones o episodios por vía. La unidad varía entre series — preparados en Lyon 2022, episodios en Genevière, pacientes en el resto.</p>
+    <div class="mstack" id="routes"></div>
+    <div class="keyrow">
+      <span><i class="sw a"></i>Local o intraarticular</span>
+      <span><i class="sw b"></i>Intravenosa</span>
+      <span><i class="sw c"></i>En cemento o por drenaje</span>
+      <span><i class="sw o"></i>Sin desglose</span>
+    </div>
+    <p class="card-foot">La vía local domina en todas las series osteoarticulares, con una excepción nítida: el centro israelí administra casi todo por vía intravenosa y es también el que reporta menor recuperación microbiológica (28 %). Lyon 2022 parece invertir el patrón, pero cuenta <em>preparados</em>, no pacientes: la vía intravenosa exige una dosis diaria y multiplica los viales por paciente.</p>
+  </div>
+</div>
+
+<!-- ============ ESQUEMA TERAPÉUTICO ============ -->
+<div class="grid">
+  <div class="card">
+    <div class="card-head">
+      <h2>Esquema terapéutico — duración, frecuencia y dosis</h2>
+      <div class="legend">
+        <span><i class="sw b"></i>Dosis única</span>
+        <span><i class="sw a"></i>Curso multidosis</span>
+        <span><i class="sw c"></i>Rescate</span>
+      </div>
+    </div>
+    <p class="card-note">Duración del curso de fagos en días, a escala. No hay un esquema estándar: el campo va de <strong>una única instilación intraoperatoria</strong> a cursos intravenosos de seis semanas, y la dosis se elige empíricamente porque la farmacocinética intraarticular no está caracterizada.</p>
+    <div class="sched" id="sched"></div>
+    <div class="xaxis sched-axis"><span class="sp"></span><div class="ticks" id="ticks-sched"></div><span class="sp"></span></div>
+    <div class="doses">
+      <div><span class="dv">1 × 10⁹ PFU/mL</span><span class="dl">Concentración final del cóctel intraarticular en Lyon y en PhagoDAIR I — 1 mL de cada fago</span></div>
+      <div><span class="dv">≥ 1 × 10⁵ PFU/mL</span><span class="dl">Mínimo exigido por Fedorov para el fago incorporado al cemento y la instilación por drenaje</span></div>
+      <div><span class="dv">5 – 50 mL</span><span class="dl">Volumen final autorizado por la ANSM según la indicación, vía intralesional o intraarticular</span></div>
+    </div>
+    <p class="card-foot"><strong>Sin barra por falta de dato publicado:</strong> la vía intravenosa diaria de Lyon 2022 (99 preparados, duración por paciente no publicada); el protocolo de Doub con catéter de Hickman (dosis intraarticulares repetidas, calendario no detallado); y el acceso compasivo de la ANSM, que fija dosis y volumen pero deja la frecuencia a criterio del prescriptor. Los antibióticos concomitantes acompañan al 97 % de los casos de infección periprotésica y la cirugía al 87 % de los episodios: ningún esquema del gráfico es monoterapia.</p>
+  </div>
+</div>
+
+<!-- ============ TABLA DE ESTUDIOS ============ -->
+<div class="grid">
+  <div class="card">
+    <div class="card-head"><h2>Todos los estudios recuperados</h2></div>
+    <p class="card-note">El título de cada estudio enlaza al texto completo, al PDF del póster o al documento regulatorio; dos entradas no tienen enlace directo recuperable y están marcadas. Los recuentos de pacientes <strong>se solapan</strong>: la serie de uso compasivo de Phaxiam contiene a la mayoría de los pacientes de Lyon, y las revisiones agrupadas reanalizan los casos ya listados. No deben sumarse.</p>
+    <div class="filterbar" role="group" aria-label="Filtrar por diseño">
+      <span class="lbl">Diseño</span>
+      <button class="btn f" data-f="all" aria-pressed="true">Todos</button>
+      <button class="btn f" data-f="rct" aria-pressed="false">Aleatorizado / controlado</button>
+      <button class="btn f" data-f="cohort" aria-pressed="false">Cohortes y series</button>
+      <button class="btn f" data-f="pooled" aria-pressed="false">Análisis agrupados</button>
+      <button class="btn f" data-f="lyon" aria-pressed="false">Lyon</button>
+    </div>
+    <div class="tscroll">
+      <table id="studies">
+        <thead><tr><th>Estudio</th><th>Año</th><th>Diseño</th><th>n</th><th>Contexto y administración</th><th>Resultado</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CRONOLOGÍA ============ -->
+<div class="grid">
+  <div class="card">
+    <div class="card-head"><h2>Cronología del programa de Lyon</h2></div>
+    <ul class="tl">
+      <li><span class="y">2017</span><span class="e"><b>Primeros casos compasivos</b><span>Fagos de Pherecydes Pharma y del Hospital Militar Reina Astrid (Bruselas). DAIR de rescate en pacientes no explantables.</span></span></li>
+      <li><span class="y">2017–20</span><span class="e"><b>21 pacientes tratados, 57 evaluados por fagograma</b><span>16 de 21 fueron IAP. Los tratados representaron el 0,9 % de toda la actividad del CRIOAc Lyon.</span></span></li>
+      <li><span class="y">2021</span><span class="e"><b>PHAG-ONE financiado con 2,85 M €</b><span>Programa prioritario ANR/Inserm de resistencia antimicrobiana, para producción académica de fagos.</span></span></li>
+      <li><span class="y">2022</span><span class="e"><b>Apertura de PHAGE<em>in</em>LYON Clinic y primer paciente de PhagoDAIR I</b><span>143 solicitudes ese año; 33 pacientes tratados — el 60 % de todo lo hecho desde 2017.</span></span></li>
+      <li><span class="y">2024</span><span class="e"><b>Publicación de la cohorte 2022</b><span><em style="font-style:italic">Int J Antimicrob Agents</em> 64:107372 — el artículo operativo de referencia del programa.</span></span></li>
+      <li><span class="y">2025</span><span class="e"><b>PhagoDAIR I en ESCMID Global; colapso del patrocinante</b><span>Phaxiam entra en concurso en marzo y en liquidación judicial en junio de 2025.</span></span></li>
+      <li><span class="y">2026</span><span class="e"><b>Paciente n.º 100 y autorización de fabricación</b><span>El 28 de mayo de 2026 los HCL se convierten en el primer hospital público de Francia autorizado por la ANSM a producir materia prima farmacéutica de fagos.</span></span></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ============ SEGURIDAD + ACCESO ============ -->
+<div class="grid g-2">
+  <div class="card">
+    <div class="card-head"><h2>Seguridad</h2></div>
+    <p class="card-note">Lo único que la base de evidencia sí establece con solidez, porque no requiere grupo control.</p>
+    <div class="strip">
+      <div><span class="v">8 %</span><span class="l">Episodios con eventos adversos (Genevière, 52 episodios) — todos menores</span></div>
+      <div><span class="v">5/10</span><span class="l">Transaminitis reversible en la serie de Doub, resuelta al suspender</span></div>
+      <div><span class="v">0</span><span class="l">Muertes atribuidas a la administración de fagos</span></div>
+      <div><span class="v">0</span><span class="l">Nuevas señales de seguridad para la ANSM desde la apertura del acceso compasivo</span></div>
+    </div>
+    <p class="card-foot"><strong>Dos señales biológicas están infrarreportadas en la literatura de IAP:</strong> emergencia de resistencia al fago in vivo en el 43,8 % de los pacientes adecuadamente muestreados y anticuerpos neutralizantes en el 38,5 % de los estudiados (Pirnay 2024). Ninguna ha sido caracterizada en una serie específica de infección periprotésica.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Vía de acceso regulatorio (Francia)</h2></div>
+    <p class="card-note">La única ruta de acceso rutinario en funcionamiento en el mundo para esta indicación.</p>
+    <ul class="facts" style="border-top:none;padding-top:0;margin-top:0">
+      <li><b>Productos</b><span>Fagos anti-<em style="font-style:italic">S. aureus</em> PP1493 y PP1815 bajo <em style="font-style:italic">accès compassionnel</em> de la ANSM; cuatro fagos anti-<em style="font-style:italic">P. aeruginosa</em> en el mismo marco</span></li>
+      <li><b>Indicación</b><span>Infección osteoarticular grave documentada por <em style="font-style:italic">S. aureus</em>, en adultos y adolescentes, con pronóstico vital o funcional comprometido y alternativas terapéuticas agotadas</span></li>
+      <li><b>Control de acceso</b><span>La prescripción requiere validación por el comité multidisciplinario nacional de infección osteoarticular compleja del CRIOAc Lyon</span></li>
+      <li><b>Preparación</b><span>1 mL de cada fago diluido en NaCl 0,9 % hasta 5–50 mL; vía intralesional o intraarticular; intravenosa solo excepcionalmente</span></li>
+      <li><b>Titular (v04, nov 2025)</b><span><strong>Phagenix</strong> (Lyon), distribuido por INTSEL Chimos — los productos sobrevivieron a la liquidación de Phaxiam bajo nueva propiedad</span></li>
+      <li><b>Fabricación</b><span>HCL autorizado por la ANSM el 28 de mayo de 2026 a producir materia prima y productos intermedios de grado farmacéutico</span></li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  Compilado el 2 de septiembre de 2026 a partir de PubMed/Europe PMC, texto completo de editoriales, documentación de acceso compasivo de la ANSM, material de congresos del CRIOAc Lyon y comunicaciones del patrocinante. Las cifras reportadas por la empresa y los resúmenes de congreso están señalados como tales y no han sido revisados por pares. PubMed y PMC bloquearon la recuperación automatizada durante la búsqueda; conviene una pasada manual antes de considerar esta revisión exhaustiva. Referencias completas en el dossier extendido que acompaña a este panel.
+</footer>
+
+</div>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- tooltip ---------- */
+  var tip = document.getElementById('tip');
+  function showTip(el, e){
+    var t = el.getAttribute('data-tip');
+    if(!t) return;
+    tip.innerHTML = t;
+    tip.classList.add('on');
+    var r = el.getBoundingClientRect();
+    var x = (e && e.clientX ? e.clientX : r.left + r.width/2);
+    var y = r.top;
+    tip.style.left = Math.min(Math.max(10, x + 12), window.innerWidth - tip.offsetWidth - 10) + 'px';
+    tip.style.top  = Math.max(10, y - tip.offsetHeight - 8) + 'px';
+  }
+  function hideTip(){ tip.classList.remove('on'); }
+  function bindTips(root){
+    root.querySelectorAll('[data-tip]').forEach(function(el){
+      el.addEventListener('mousemove', function(e){ showTip(el, e); });
+      el.addEventListener('mouseleave', hideTip);
+      el.addEventListener('focus', function(){ showTip(el, null); });
+      el.addEventListener('blur', hideTip);
+    });
+  }
+
+  /* ---------- chart 1 data ---------- */
+  var RATES = [
+    {g:'Ensayos y estudios controlados', gn:'aleatorización o grupo comparador'},
+    {s:'Fedorov 2023 — fago en cemento', n:'n=22', v:95.5, cmp:false, def:'Libre de recaída', when:'12 meses', note:'Revisión de cadera en un tiempo; control histórico, no aleatorizado'},
+    {s:'Fedorov 2023 — control histórico', n:'n=22', v:63.6, cmp:true,  def:'Libre de recaída', when:'12 meses', note:'Cemento con vancomicina, sin fago'},
+    {s:'PhagoDAIR I — brazo fago', n:'n=19', v:73.7, cmp:false, def:'Control clínico', when:'12 semanas', note:'Único ensayo aleatorizado del campo'},
+    {s:'PhagoDAIR I — placebo', n:'n=7', v:71.4, cmp:true, def:'Control clínico', when:'12 semanas', note:'Brazo demasiado pequeño para interpretar'},
+
+    {g:'Cohortes y series recuperadas', gn:'sin grupo control'},
+    {s:'Doub 2023 — EE. UU.', n:'n=10', v:100, cmp:false, def:'Sin recurrencia con el germen índice', when:'variable, corto', note:'IAP refractaria, 50 % SARM. Desenlace laxo: no exige erradicación'},
+    {s:'Ferry 2020 — rodilla recidivante', n:'n=3', v:100, cmp:false, def:'Mejoría clínica sostenida', when:'7, 11 y 30 meses', note:'Lyon. 2 de 3 necesitaron un nuevo DAIR por derrame estéril'},
+    {s:'Phaxiam uso compasivo, IAP — 3 m', n:'n=52', v:79, cmp:false, def:'Control de la infección', when:'3 meses', note:'Dato de empresa, no revisado por pares. Más de la mitad son pacientes de Lyon'},
+    {s:'Phaxiam uso compasivo, IAP — 12 m', n:'n=52', v:65.5, rng:[64,67], cmp:false, def:'Control de la infección', when:'12 meses', note:'Conjunto de datos incompleto; la empresa reporta un rango de 64–67 %'},
+    {s:'Centro israelí de fagoterapia', n:'n=18', v:78, cmp:false, def:'Remisión clínica', when:'1 mes – 3 años', note:'Todas las indicaciones; las infecciones óseas fueron el 50 % de los tratados'},
+    {s:'Pirnay 2024 — mejoría clínica', n:'n=114 infecciones', v:77.2, cmp:false, def:'Mejoría clínica', when:'variable', note:'Multinacional, todas las indicaciones. Las óseas fueron 16 de 114; no hay subgrupo de IAP publicado'},
+    {s:'Pirnay 2024 — erradicación', n:'n=106 infecciones', v:61.3, cmp:false, def:'Erradicación microbiológica', when:'variable', note:'La misma cohorte medida con un desenlace exigente: 16 puntos menos'},
+    {s:'Cohorte Lyon 2022', n:'n=26', v:69.2, cmp:false, def:'Evolución favorable', when:'10,6 meses (media)', note:'3 de los 18 favorables desarrollaron infección por otro germen'},
+    {s:'Munteanu 2025 — Reino Unido', n:'n=3', v:66.7, cmp:false, def:'Resolución clínica completa', when:'no especificado', note:'2 de 3; incluye una importación de urgencia de fago a medida'},
+    {s:'Acceso compasivo ANSM', n:'n=15', v:46.7, cmp:false, def:'Mejoría clínica', when:'21 días (mediana)', note:'Farmacovigilancia regulatoria; 76 % IAP. Curación completa solo 6,7 %'},
+
+    {g:'Análisis agrupados', gn:'reanalizan los casos de arriba — no son evidencia nueva'},
+    {s:'Clarke 2020 — revisión de alcance', n:'n=277', v:93.1, cmp:false, def:'Resolución clínica', when:'variable, 1933–2020', note:'Agrega 87 años de literatura mayoritariamente premoderna. No aplicable a la práctica actual'},
+    {s:'Young 2024 — metaanálisis IAP, ≥12 m', n:'n=37', v:83, cmp:false, ci:[53,95], def:'Remisión agrupada', when:'≥12 meses', note:'Subgrupo con seguimiento largo'},
+    {s:'Genevière 2021 — desenlace final IOA', n:'n=52 episodios', v:83, cmp:false, def:'Favorable tras nuevas intervenciones', when:'variable', note:'Incluye rescates posteriores; no es el efecto del fago aislado'},
+    {s:'Young 2024 — metaanálisis IAP', n:'n=37', v:78, cmp:false, ci:[39,95], def:'Remisión agrupada', when:'variable', note:'Solo 4 estudios. El IC va de inútil a transformador'},
+    {s:'Genevière 2021 — global IOA', n:'n=52 episodios', v:71, cmp:false, def:'Resolución completa', when:'variable', note:'Osteomielitis 88 % frente a IAP 57 %: la prótesis es lo que baja el promedio'},
+    {s:'Genevière 2021 — subgrupo IAP', n:'n=28 episodios', v:57, cmp:false, def:'Resolución completa', when:'variable', note:'La cifra más pesimista y la más específica de la indicación'}
+  ];
+
+  function fmt(v){ return String(v).replace('.', ','); }
+
+  function drawTicks(el){
+    el.innerHTML = '';
+    [0,25,50,75,100].forEach(function(t){
+      var i = document.createElement('i');
+      i.style.left = t + '%';
+      i.textContent = t + '%';
+      if(t === 0) i.style.transform = 'translateX(0)';
+      if(t === 100) i.style.transform = 'translateX(-100%)';
+      el.appendChild(i);
+    });
+  }
+
+  function gridEl(pos){
+    var g = document.createElement('div');
+    g.className = 'gridlines';
+    (pos || [25,50,75,100]).forEach(function(t){
+      var i = document.createElement('i'); i.style.left = t + '%'; g.appendChild(i);
+    });
+    return g;
+  }
+
+  var bars1 = document.getElementById('bars1');
+  RATES.forEach(function(d){
+    if(d.g){
+      var h = document.createElement('div'); h.className = 'hgroup';
+      h.innerHTML = d.g + '<em>' + d.gn + '</em>';
+      bars1.appendChild(h);
+      return;
+    }
+    var span = d.ci || d.rng;
+    var row = document.createElement('div'); row.className = 'hrow';
+    var lab = document.createElement('div'); lab.className = 'hlab';
+    lab.innerHTML = d.s + '<i>' + d.n + '</i>';
+    var plot = document.createElement('div'); plot.className = 'plot';
+    plot.appendChild(gridEl());
+    var bar = document.createElement('div');
+    bar.className = 'bar' + (d.cmp ? ' cmp' : '');
+    bar.style.width = d.v + '%';
+    bar.setAttribute('tabindex','0');
+    bar.setAttribute('data-tip',
+      '<b>' + d.s + '</b>' + d.n + ' · ' + fmt(d.v) + '%<br>' +
+      d.def + ' · ' + d.when +
+      (d.ci ? '<br>IC 95 %: ' + d.ci[0] + '–' + d.ci[1] + ' %' : '') +
+      (d.rng ? '<br>Rango reportado: ' + d.rng[0] + '–' + d.rng[1] + ' %' : '') +
+      (d.note ? '<br><br>' + d.note : ''));
+    plot.appendChild(bar);
+    if(span){
+      var ci = document.createElement('div'); ci.className = 'ci';
+      ci.style.left = span[0] + '%';
+      ci.style.width = (span[1] - span[0]) + '%';
+      plot.appendChild(ci);
+    }
+    var val = document.createElement('div'); val.className = 'bval';
+    val.textContent = fmt(d.v) + '%';
+    if(span){ val.style.left = '8px'; val.style.color = '#fcfcfb'; }
+    else if(d.v > 82){ val.style.right = 'calc(' + (100 - d.v) + '% + 8px)'; val.style.color = '#fcfcfb'; }
+    else { val.style.left = 'calc(' + d.v + '% + 8px)'; }
+    plot.appendChild(val);
+    row.appendChild(lab); row.appendChild(plot);
+    bars1.appendChild(row);
+  });
+  drawTicks(document.getElementById('ticks1'));
+
+  /* table twin */
+  var tb1 = document.getElementById('tbody1');
+  RATES.forEach(function(d){
+    var tr = document.createElement('tr');
+    if(d.g){
+      tr.innerHTML = '<td colspan="5" style="background:var(--surface-2);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">' + d.g + '</td>';
+      tb1.appendChild(tr);
+      return;
+    }
+    var span = d.ci || d.rng;
+    tr.innerHTML = '<td class="s">' + d.s + (d.note ? '<i>' + d.note + '</i>' : '') + '</td>' +
+      '<td class="n">' + d.n.replace('n=','') + '</td>' +
+      '<td>' + d.def + '</td><td>' + d.when + '</td>' +
+      '<td class="n">' + fmt(d.v) + ' %' +
+      (span ? ' <span style="color:var(--muted)">(' + span[0] + '–' + span[1] + ')</span>' : '') + '</td>';
+    tb1.appendChild(tr);
+  });
+
+  var bC = document.getElementById('v-chart'), bT = document.getElementById('v-table');
+  var cC = document.getElementById('chart1'), cT = document.getElementById('table1');
+  bC.addEventListener('click', function(){ cC.hidden = false; cT.hidden = true; bC.setAttribute('aria-pressed','true'); bT.setAttribute('aria-pressed','false'); });
+  bT.addEventListener('click', function(){ cC.hidden = true; cT.hidden = false; bT.setAttribute('aria-pressed','true'); bC.setAttribute('aria-pressed','false'); });
+
+  /* ---------- funnel ---------- */
+  var FUNNEL = [
+    {s:'Solicitudes recibidas', n:143, tipx:'92 % desde Francia'},
+    {s:'Indicación confirmada en comité', n:57, tipx:'40 % de las solicitudes'},
+    {s:'Con germen cubierto por un fago', n:44, tipx:'13 quedaron fuera por falta de fago activo'},
+    {s:'Tratados', n:33, tipx:'26 de ellos en los propios HCL'}
+  ];
+  var fw = document.getElementById('funnel');
+  FUNNEL.forEach(function(d){
+    var pct = d.n / 143 * 100;
+    var row = document.createElement('div'); row.className = 'hrow';
+    var lab = document.createElement('div'); lab.className = 'hlab';
+    lab.innerHTML = d.s + '<i>' + Math.round(d.n / 143 * 100) + '% de las solicitudes</i>';
+    var plot = document.createElement('div'); plot.className = 'plot';
+    plot.appendChild(gridEl([50/143*100, 100/143*100, 100]));
+    var bar = document.createElement('div'); bar.className = 'bar';
+    bar.style.width = pct + '%';
+    bar.setAttribute('tabindex','0');
+    bar.setAttribute('data-tip','<b>' + d.s + '</b>' + d.n + ' pacientes · ' + d.tipx);
+    plot.appendChild(bar);
+    var val = document.createElement('div'); val.className = 'bval';
+    val.textContent = d.n;
+    if(pct > 82){ val.style.right = 'calc(' + (100 - pct) + '% + 8px)'; val.style.color = '#fcfcfb'; }
+    else { val.style.left = 'calc(' + pct + '% + 8px)'; }
+    plot.appendChild(val);
+    row.appendChild(lab); row.appendChild(plot);
+    fw.appendChild(row);
+  });
+  var tf = document.getElementById('ticks-funnel');
+  tf.innerHTML = '';
+  [0,50,100,143].forEach(function(v){
+    var i = document.createElement('i');
+    var pos = v / 143 * 100;
+    i.style.left = pos + '%';
+    i.textContent = v;
+    if(v === 0) i.style.transform = 'translateX(0)';
+    if(v === 143) i.style.transform = 'translateX(-100%)';
+    tf.appendChild(i);
+  });
+
+  /* ---------- stacked bars ---------- */
+  function stack(id, segs){
+    var el = document.getElementById(id);
+    segs.forEach(function(s){
+      var d = document.createElement('div');
+      d.className = 'seg ' + s.c;
+      d.style.flex = s.v + ' 1 0';
+      d.setAttribute('tabindex','0');
+      d.setAttribute('data-tip','<b>' + s.label + '</b>' + s.tip);
+      if(s.v >= 20) d.innerHTML = '<span>' + s.inside + '</span>';
+      el.appendChild(d);
+    });
+  }
+  stack('stack-site', [
+    {c:'a', v:80.8, label:'Osteoarticular', tip:'80,8 % — mayoritariamente infección periprotésica', inside:'80,8 %'},
+    {c:'b', v:7.7,  label:'Vascular / endocarditis', tip:'7,7 % — bacteriemia, endocarditis, infección vascular', inside:''},
+    {c:'c', v:7.7,  label:'Pulmonar', tip:'7,7 %', inside:''},
+    {c:'o', v:3.8,  label:'Otros', tip:'3,8 % — resto no desglosado en la publicación', inside:''}
+  ]);
+  stack('stack-bug', [
+    {c:'a', v:73.1, label:'Staphylococcus aureus', tip:'19 de 26 pacientes', inside:'73,1 %'},
+    {c:'b', v:26.9, label:'Pseudomonas aeruginosa', tip:'6 de 26 pacientes; 1 paciente recibió ambos', inside:'26,9 %'}
+  ]);
+  stack('stack-route', [
+    {c:'a', v:63.5, label:'Intravenosa diaria', tip:'99 cócteles preparados', inside:'99'},
+    {c:'b', v:30.1, label:'Local ecoguiada', tip:'47 cócteles preparados', inside:'47'},
+    {c:'c', v:6.4,  label:'Local intraoperatoria', tip:'10 cócteles preparados', inside:''}
+  ]);
+
+  /* ---------- study table ---------- */
+  var STUDIES = [
+    {t:'rct', lyon:true, s:'PhagoDAIR I', u:'https://www.crioac-lyon.fr/wp-content/uploads/documents/posters/2025/PhagoDAIR-Poster-ESCMID-2025_vf.pdf', src:'ESCMID Global · NCT05369104', y:'2025', d:'ECA piloto, no comparativo, doble ciego', tier:'rct', n:'29 (20/9)', ctx:'IAP de cadera o rodilla por <em>S. aureus</em> con DAIR tardío; inyección intraarticular única de PP1493/PP1815 o placebo', r:'73,7 % vs 71,4 % de control clínico a 12 semanas; 80 % con rescate. Sin señal de seguridad'},
+    {t:'rct', s:'Fedorov et al., <em>Viruses</em> 15:499', u:'https://doi.org/10.3390/v15020499', src:'Novosibirsk, Rusia', y:'2023', d:'Prospectivo con control histórico', tier:'ctl', n:'23 vs 22', ctx:'IAP estafilocócica de cadera, revisión en un tiempo. Fago en el cemento óseo + 20 mL/día por drenaje durante 10 días', r:'Recaída 4,5 % vs 36,4 % a 12 meses (p=0,021); OR 0,083. Dos fiebres transitorias'},
+    {t:'cohort', lyon:true, s:'Ferry et al., <em>Int J Antimicrob Agents</em> 64:107372', u:'https://www.crioac-lyon.fr/wp-content/uploads/documents/publications/2024/Acess-to-phage-therapy-2022.pdf', src:'PMID 39491599 · Lyon', y:'2024', d:'Cohorte prospectiva de programa', tier:'', n:'143 → 33', ctx:'80,8 % osteoarticular; 172 cócteles (99 IV, 47 ecoguiados, 10 intraoperatorios); 22 días de media hasta la primera dosis', r:'69,2 % favorable; 30,8 % recaída o persistencia; seguimiento medio 10,6 meses'},
+    {t:'cohort', lyon:true, s:'Ferry et al., <em>Front Med</em> 7:570572', u:'https://www.frontiersin.org/journals/medicine/articles/10.3389/fmed.2020.570572/full', src:'Lyon', y:'2020', d:'Serie de casos', tier:'', n:'3', ctx:'Rodilla protésica con <em>S. aureus</em> recidivante, 80–84 años; PP1493/PP1815/PP1957 a 1×10⁹ PFU/mL intraarticular tras el cierre', r:'Mejoría funcional marcada a 7, 11 y 30 meses; 2 requirieron un nuevo DAIR por derrame estéril'},
+    {t:'cohort', lyon:true, s:'Ferry et al., <em>Front Med</em> 8:569159', u:'https://www.frontiersin.org/journals/medicine/articles/10.3389/fmed.2021.569159/full', src:'Lyon', y:'2021', d:'Caso clínico', tier:'', n:'1', ctx:'Rodilla protésica con <em>P. aeruginosa</em> recidivante; DAIR <strong>artroscópico</strong> con fagoterapia personalizada', r:'Prótesis conservada — variante mínimamente invasiva del procedimiento'},
+    {t:'cohort', lyon:true, s:'Ferry et al., <em>Front Med</em> 7:342', u:'https://pmc.ncbi.nlm.nih.gov/articles/PMC7410981/', src:'Lyon', y:'2020', d:'Caso clínico', tier:'', n:'1', ctx:'Megaprótesis de rodilla infectada con necesidad de colgajo; fagos vehiculizados en hidrogel DAC®', r:'Prueba de concepto de un vehículo de liberación local'},
+    {t:'cohort', lyon:true, s:'Ferry et al., póster ECCMID', u:'https://www.crioac-lyon.fr/wp-content/uploads/documents/posters/2021/ECCMID2021_FERRY_PHAGE_FINAL.pdf', src:'Lyon, 2017–2020', y:'2021', d:'Cohorte de centro', tier:'', n:'57 → 21', ctx:'16 de 21 fueron IAP; <em>S. aureus</em> 10, <em>P. aeruginosa</em> 8; mayoría local, 4 intravenosos', r:'Los tratados fueron el 0,9 % de toda la actividad del CRIOAc Lyon'},
+    {t:'cohort', s:'Doub et al., <em>Clin Infect Dis</em> 76:e1463', u:'https://academic.oup.com/cid/article/76/3/e1463/6675229', src:'PMID 36104853 · EE. UU.', y:'2023', d:'Serie de casos', tier:'', n:'10', ctx:'IAP refractaria, 50 % SARM; 6 DAIR y 4 revisiones; dosis intraoperatoria ± intravenosa o repetida por catéter de Hickman', r:'Sin recurrencia con el germen índice; 5 transaminitis reversibles, 2 infiltraciones de partes blandas'},
+    {t:'cohort', lyon:true, s:'Programa compasivo Phaxiam', u:'https://www.businesswire.com/news/home/20250107151842/en/PHAXIAM-Therapeutics-Announces-Updated-Real-Life-Clinical-Data-From-Patients-Treated-Under-the-Compassionate-Status-in-Europe', src:'Divulgación empresarial, ene 2025 — no revisada por pares', y:'2025', d:'Registro de uso compasivo', tier:'', n:'52 IAP de 88', ctx:'Europa desde 2017; &gt;120 tratados en total, más de la mitad en PHAGE<em>in</em>LYON. Vía local, intravenosa y nebulizada', r:'Control a 3 meses: 79 % en IAP (77 % <em>S. aureus</em>, 83 % <em>P. aeruginosa</em>); 64–67 % a 12 meses con datos incompletos'},
+    {t:'cohort', s:'Informe periódico n.º 6 de la ANSM', u:'https://ansm.sante.fr/uploads/2024/06/11/20240611-aac-phages-resume-rapport-6.pdf', src:'PP1493/PP1815 · may 2022 – ene 2024', y:'2024', d:'Farmacovigilancia regulatoria', tier:'', n:'21 incluidos, 15 dosificados', ctx:'76,2 % IAP (rodilla 43,8 %); inyección in situ 66,7 %, intravenosa 20 %', r:'Mejoría en 46,7 % a los 21 días (mediana); curación completa 6,7 %. Sin nuevas señales de seguridad'},
+    {t:'cohort', s:'Pirnay et al., <em>Nat Microbiol</em>', u:'https://www.nature.com/articles/s41564-024-01705-x', src:'PMID 38834776 · 35 hospitales, 12 países', y:'2024', d:'Cohorte retrospectiva multinacional', tier:'', n:'100 (16 óseas)', ctx:'Fagoterapia personalizada 2008–2022, todas las indicaciones', r:'77,2 % de mejoría clínica y 61,3 % de erradicación global; sin antibiótico concomitante la erradicación fue 70 % menos probable (OR 0,30). Resistencia al fago en 43,8 %, anticuerpos neutralizantes en 38,5 %'},
+    {t:'cohort', s:'Centro israelí de fagoterapia, <em>Open Forum Infect Dis</em> 10:ofad221', u:'https://academic.oup.com/ofid/article/10/5/ofad221/7133195', src:'PMID 37213422 · 2018–2022', y:'2023', d:'Cohorte de centro', tier:'', n:'18 (20 cursos)', ctx:'159 solicitudes recibidas; las infecciones óseas fueron el 50 % de los casos tratados; casi todos por vía intravenosa, 6–45 días', r:'78 % de éxito (14 remisiones, 4 fracasos); recuperación microbiológica 28 %. Sin efectos adversos mayores'},
+    {t:'cohort', s:'Munteanu et al., serie británica', src:'Reino Unido', y:'2025', d:'Serie de casos', tier:'', n:'3', ctx:'<em>S. aureus</em>, <em>S. epidermidis</em> y polimicrobiana con <em>K. pneumoniae</em>; intraoperatorio más infusión por drenaje, con importación de urgencia de un fago a medida', r:'2 de 3 con resolución clínica completa'},
+    {t:'pooled', s:'Young et al., <em>Medicina</em> 60:790', u:'https://www.mdpi.com/1648-9144/60/5/790', src:'PMID 38792972 · específico de IAP', y:'2024', d:'Revisión sistemática y metaanálisis de proporciones', tier:'', n:'4 estudios, 37 pacientes', ctx:'Intraarticular en 73 %, cócteles en 65 %, antibiótico concomitante en 97 %; estafilococos en 35/37', r:'Remisión agrupada 78 % (IC 95 % 39–95); 83 % (53–95) con seguimiento ≥12 meses'},
+    {t:'pooled', s:'Genevière et al., <em>EFORT Open Rev</em> 6:1148', u:'https://eor.bioscientifica.com/view/journals/eor/6/12/2058-5241.6.210073.xml', src:'PMID 35003759 · infección osteoarticular', y:'2021', d:'Revisión sistemática', tier:'', n:'51 pacientes, 52 episodios', ctx:'2000–2021; tópico o intraarticular en 85 %, antibióticos en 79 %, cirugía en 87 %', r:'Éxito global 71 %; osteomielitis 88 % pero <strong>IAP solo 57 %</strong>; 83 % finalmente favorable. Eventos adversos en 8 %, todos menores'},
+    {t:'pooled', s:'Clarke et al.', src:'Revisión de alcance, 1933–2020', y:'2020', d:'Revisión de alcance', tier:'', n:'277', ctx:'Toda infección osteoarticular; métodos y épocas muy heterogéneos', r:'93,1 % de resolución clínica reportada — interpretar con cautela: dominan el sesgo de publicación y estándares premodernos'},
+    {t:'pooled', s:'Yang et al. (citado en <em>Antibiotics</em> 2025;14:581)', u:'https://www.mdpi.com/2079-6382/14/6/581', src:'Específico de IAP', y:'2024', d:'Revisión sistemática', tier:'', n:'16 estudios, 42 pacientes', ctx:'<em>S. aureus</em> en 18 incluidos SARM; seguimiento de 4 semanas a &gt;12 meses', r:'Resolución o mejoría sustancial en la mayoría; sin definición de desenlace estandarizada'},
+    {t:'cohort', s:'Le Pogam et al., <em>BMC Infect Dis</em> 24:923', u:'https://link.springer.com/article/10.1186/s12879-024-09814-y', src:'Francia, centro no-Lyon', y:'2024', d:'Estudio retrospectivo de elegibilidad', tier:'', n:'96 cribados', ctx:'Criterios franceses de infección osteoarticular compleja', r:'<strong>44 % (42/96) elegibles</strong> para fagoterapia adyuvante; los elegibles tuvieron antibioterapia intravenosa y hospitalización más prolongadas'},
+    {t:'cohort', lyon:true, s:'Ferry et al., <em>Viruses</em> 13:2414', u:'https://doi.org/10.3390/v13122414', src:'Lyon · documento de posición', y:'2021', d:'Revisión de programa', tier:'', n:'—', ctx:'Marco «fagoterapia 2.0»: GMP, equipo multidisciplinario, alianzas industriales y ensayos estructurados', r:'Define los requisitos que el propio grupo considera necesarios antes de la adopción rutinaria'}
+  ];
+
+  var tbody = document.querySelector('#studies tbody');
+  STUDIES.forEach(function(d){
+    var tr = document.createElement('tr');
+    tr.setAttribute('data-t', d.t);
+    tr.setAttribute('data-lyon', d.lyon ? '1' : '0');
+    var titleCell = d.u
+      ? '<a href="' + d.u + '" target="_blank" rel="noopener">' + d.s + '<svg class="ext" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 1.5h6v6M10.5 1.5L5 7M9 8v2.5H1.5V3H4"/></svg></a>'
+      : d.s + '<span class="nolink" title="No se recuperó un enlace directo">sin enlace</span>';
+    tr.innerHTML =
+      '<td class="s">' + titleCell + '<i>' + d.src + '</i></td>' +
+      '<td class="n">' + d.y + '</td>' +
+      '<td><span class="pill ' + (d.tier || '') + '">' + d.d + '</span></td>' +
+      '<td class="n">' + d.n + '</td>' +
+      '<td>' + d.ctx + '</td>' +
+      '<td>' + d.r + '</td>';
+    tbody.appendChild(tr);
+  });
+
+  var chips = document.querySelectorAll('.btn.f');
+  chips.forEach(function(c){
+    c.addEventListener('click', function(){
+      var f = c.dataset.f;
+      chips.forEach(function(o){ o.setAttribute('aria-pressed', String(o === c)); });
+      tbody.querySelectorAll('tr').forEach(function(r){
+        var keep = f === 'all'
+          || (f === 'lyon' ? r.dataset.lyon === '1' : r.dataset.t === f);
+        r.hidden = !keep;
+      });
+    });
+  });
+
+  /* ---------- multi-series stacked charts ---------- */
+  function mstack(id, rows, keys){
+    var host = document.getElementById(id);
+    rows.forEach(function(r){
+      var row = document.createElement('div'); row.className = 'mrow';
+      var lab = document.createElement('div'); lab.className = 'ml';
+      lab.innerHTML = r.s + '<i>' + r.n + '</i>';
+      var st = document.createElement('div'); st.className = 'stack';
+      r.v.forEach(function(val, i){
+        if(!val) return;
+        var seg = document.createElement('div');
+        seg.className = 'seg ' + keys[i].c;
+        seg.style.flex = val + ' 1 0';
+        seg.setAttribute('tabindex','0');
+        seg.setAttribute('data-tip','<b>' + keys[i].label + '</b>' + r.s + ' · ' + fmt(Math.round(val * 10) / 10) + ' %' + (r.note ? '<br><br>' + r.note : ''));
+        if(val >= 17) seg.innerHTML = '<span>' + fmt(Math.round(val)) + '%</span>';
+        st.appendChild(seg);
+      });
+      row.appendChild(lab); row.appendChild(st);
+      host.appendChild(row);
+    });
+  }
+
+  var SPECIES_KEYS = [
+    {c:'a', label:'S. aureus'},
+    {c:'b', label:'P. aeruginosa'},
+    {c:'c', label:'Otros estafilococos'},
+    {c:'d', label:'Otras especies o polimicrobiana'},
+    {c:'o', label:'Sin desglose por especie'}
+  ];
+  mstack('species', [
+    {s:'Cohorte Lyon 2022', n:'n=26 pacientes', v:[73.1,26.9,0,0,0], note:'Un paciente recibió fagos contra ambas especies, por eso las cifras se solapan'},
+    {s:'Lyon 2017–2020', n:'n=21 pacientes', v:[47.6,38.1,9.5,0,4.8], note:'S. aureus 10, P. aeruginosa 8, S. lugdunensis 1, S. epidermidis 1'},
+    {s:'Doub 2023 — EE. UU.', n:'n=10 pacientes', v:[50,0,0,0,50], note:'50 % SARM; el resto son estafilococos sin desglose publicado'},
+    {s:'Fedorov 2023 — Rusia', n:'n=23 pacientes', v:[0,0,0,0,100], note:'Solo estafilococos: S. epidermidis, S. aureus y S. haemolyticus, sin reparto publicado'},
+    {s:'Munteanu 2025 — R. Unido', n:'n=3 pacientes', v:[33.3,0,33.3,33.3,0], note:'Un caso de S. aureus, uno de S. epidermidis y uno polimicrobiano con K. pneumoniae'},
+    {s:'Acceso compasivo ANSM', n:'n=21 pacientes', v:[71.4,0,0,28.6,0], note:'71,4 % S. aureus monomicrobiano; 28,6 % polimicrobiano, a veces con P. aeruginosa'},
+    {s:'Young 2024 — metaanálisis IAP', n:'n=37 pacientes', v:[0,0,0,5.4,94.6], note:'Estafilococos en 35 de 37, incluidos SARM, SASM, S. epidermidis y S. lugdunensis, sin reparto'},
+    {s:'Centro israelí', n:'n=18 pacientes', v:[45,0,0,0,55], note:'Todas las indicaciones. S. aureus 45 %, seguido de P. aeruginosa y A. baumannii sin cifras'},
+    {s:'Pirnay 2024 — multinacional', n:'n=100 pacientes', v:[39,49,0,12,0], note:'Todas las indicaciones; solo 16 de 114 infecciones fueron óseas'}
+  ], SPECIES_KEYS);
+
+  var ROUTE_KEYS = [
+    {c:'a', label:'Local o intraarticular'},
+    {c:'b', label:'Intravenosa'},
+    {c:'c', label:'En cemento o por drenaje'},
+    {c:'o', label:'Sin desglose'}
+  ];
+  mstack('routes', [
+    {s:'Lyon 2022', n:'156 preparados', v:[36.5,63.5,0,0], note:'57 preparados locales (47 ecoguiados, 10 intraoperatorios) y 99 intravenosos diarios'},
+    {s:'Lyon 2017–2020', n:'n=21 pacientes', v:[81,19,0,0], note:'Mayoría local; 4 pacientes recibieron fagos por vía intravenosa'},
+    {s:'Young 2024 — metaanálisis IAP', n:'n=37 pacientes', v:[73,0,0,27], note:'Intraarticular en el 73 %; el resto intravenoso o combinado, sin desglose'},
+    {s:'Genevière 2021 — IOA', n:'52 episodios', v:[85,0,0,15], note:'Tópico o intraarticular en 44 de 52 episodios, casi siempre intraoperatorio'},
+    {s:'Acceso compasivo ANSM', n:'15 dosificados', v:[73.4,20,0,6.6], note:'Inyección in situ 66,7 %, aplicación local 6,7 %, intravenosa 20 %'},
+    {s:'Fedorov 2023', n:'n=23 pacientes', v:[0,0,100,0], note:'6 mL en el cemento óseo más 20 mL diarios por drenaje durante 10 días'},
+    {s:'Doub 2023', n:'n=10 pacientes', v:[100,0,0,0], note:'Todos recibieron dosis intraarticular; parte de ellos además un curso intravenoso corto'},
+    {s:'Centro israelí', n:'20 cursos', v:[10,90,0,0], note:'Casi todo intravenoso; solo dos pies diabéticos se trataron por vía tópica'}
+  ], ROUTE_KEYS);
+
+  /* ---------- schedule range plot ---------- */
+  var MAXD = 45;
+  var SCHED = [
+    {s:'PhagoDAIR I', d:'1 mL de cada fago · 1×10⁹ PFU/mL', a:1, b:1, k:'single', txt:'Dosis única', tip:'Inyección intraarticular única durante el DAIR, o ecoguiada dos semanas después'},
+    {s:'Ferry 2020 — Lyon', d:'Cóctel de 3 fagos · 1×10⁹ PFU/mL final', a:1, b:1, k:'single', txt:'Dosis única', tip:'Instilación intraarticular inmediatamente después del desbridamiento y el cierre'},
+    {s:'PhagoDAIR I — rescate', d:'3 inyecciones ecoguiadas', a:1, b:21, k:'rescue', txt:'21 días', tip:'Una inyección semanal durante 3 semanas en pacientes que recayeron; 2 de 4 quedaron libres de infección'},
+    {s:'Fedorov 2023', d:'6 mL en cemento + 20 mL/día · ≥10⁵ PFU/mL', a:1, b:10, k:'', txt:'10 días', tip:'Fago incorporado al cemento en la cirugía y luego instilación diaria por drenaje'},
+    {s:'Protocolo compasivo habitual', d:'Cada 24–48 h por catéter postoperatorio', a:3, b:14, k:'', txt:'3–14 días', tip:'Esquema descrito de forma consistente en las revisiones del campo para la vía intraarticular'},
+    {s:'Centro israelí', d:'Intravenoso, pauta según caso', a:6, b:45, k:'', txt:'6–45 días', tip:'El rango más amplio publicado; casi todos por vía intravenosa'}
+  ];
+  var sh = document.getElementById('sched');
+  SCHED.forEach(function(d){
+    var row = document.createElement('div'); row.className = 'srow';
+    var lab = document.createElement('div'); lab.className = 'sl';
+    lab.innerHTML = d.s + '<i>' + d.d + '</i>';
+    var plot = document.createElement('div'); plot.className = 'plot';
+    plot.appendChild(gridEl([15/MAXD*100, 30/MAXD*100, 100]));
+    var bar = document.createElement('div');
+    bar.className = 'rbar' + (d.k ? ' ' + d.k : '');
+    bar.style.left = ((d.a - 1) / MAXD * 100) + '%';
+    bar.style.width = Math.max((d.b - d.a + 1) / MAXD * 100, 0.8) + '%';
+    bar.setAttribute('tabindex','0');
+    bar.setAttribute('data-tip','<b>' + d.s + '</b>' + d.txt + ' · ' + d.d + '<br><br>' + d.tip);
+    plot.appendChild(bar);
+    var v = document.createElement('div'); v.className = 'sv'; v.textContent = d.txt;
+    row.appendChild(lab); row.appendChild(plot); row.appendChild(v);
+    sh.appendChild(row);
+  });
+  var ts = document.getElementById('ticks-sched');
+  ts.innerHTML = '';
+  [0,15,30,45].forEach(function(v){
+    var i = document.createElement('i');
+    i.style.left = (v / MAXD * 100) + '%';
+    i.textContent = v === 0 ? '0 días' : v;
+    if(v === 0) i.style.transform = 'translateX(0)';
+    if(v === MAXD) i.style.transform = 'translateX(-100%)';
+    ts.appendChild(i);
+  });
+
+  bindTips(document);
+})();
+</script>
+
+</body>
+</html>
